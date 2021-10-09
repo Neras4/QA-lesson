@@ -85,3 +85,35 @@ def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     page.should_enter_basket()
     page = BasketPage(browser, browser.current_url)
     page.is_basket_empty()
+
+@pytest.mark.register_user
+class TestUserAddToBasketFromProductPage():
+    @pytest.fixture(scope="function", autouse=True)
+    def setup(self, browser):
+        link = "http://selenium1py.pythonanywhere.com/en-gb/accounts/login/"
+        self.login_page = LoginPage(browser, link)
+        self.login_page.open()
+        count = random.randint(1,100)
+        email = str(time.time()) + "@fakemail.org"
+        password = str(time.time() + count)
+        self.login_page.register_new_user(email, password)
+        self.login_page.should_be_authorized_user()
+
+
+
+
+    def test_user_cant_see_success_message(self, browser):
+        link = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/'
+        self.product_page = ProductPage(browser, link)
+        self.product_page.open()
+        self.product_page.should_not_be_success_message()
+
+    def test_user_adding_product_to_basket(self, browser):
+        link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
+        self.product_page = ProductPage(browser, link)
+        self.product_page.open()
+        self.product_page.add_to_basket()
+        #product_page.solve_quiz_and_get_code()
+        self.product_page.should_be_same_price()
+        self.product_page.should_be_same_name()
+    
