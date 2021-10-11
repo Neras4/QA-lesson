@@ -1,1 +1,1 @@
-all = ['test_main_page']
+all = ['test_main_page', 'test_product_page']
