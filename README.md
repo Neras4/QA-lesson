@@ -1,2 +1,2 @@
-# QA-lesson
-QA lesson, stage 4
+# QA
+QA
